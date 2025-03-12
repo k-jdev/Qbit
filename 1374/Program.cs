@@ -10,11 +10,11 @@ class Program
         {
             arr[i] = int.Parse(input[i]);
         }
-        SortArrayByIndexParity(arr);
+        SortEvenNumbers(arr);
         Console.WriteLine(string.Join(" ", arr));
     }
 
-    static void SortArrayByIndexParity(int[] arr)
+    static void SortEvenNumbers(int[] arr)
     {
         int evenCount = (arr.Length + 1) / 2;
         int oddCount = arr.Length / 2;

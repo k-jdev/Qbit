@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 namespace _1380
 {
     class Program
@@ -7,71 +6,69 @@ namespace _1380
         static void Main()
         {
             int n = int.Parse(Console.ReadLine());
-            string[] tokens = Console.ReadLine().Split();
+            string[] inputDigits = Console.ReadLine().Split();
 
-            int[] count = new int[10];
+            int[] freqMin = new int[10];
+            int[] freqMax = new int[10];
 
             for (int i = 0; i < n; i++)
             {
-                int digit = int.Parse(tokens[i]);
-                count[digit]++;
+                int digit = int.Parse(inputDigits[i]);
+                freqMin[digit]++;
+                freqMax[digit]++;
             }
 
-            string minNumber = BuildMinNumber(count);
-            string maxNumber = BuildMaxNumber(count);
-
-            Console.WriteLine(minNumber);
-            Console.WriteLine(maxNumber);
+            Console.WriteLine(FindMinNumber(freqMin, n));
+            Console.WriteLine(FindMaxNumber(freqMax, n));
         }
 
-        static string BuildMinNumber(int[] count)
+        static string FindMinNumber(int[] freq, int n)
         {
-            char[] result = new char[count[0] + count[1] + count[2] + count[3] + count[4] +
-                                    count[5] + count[6] + count[7] + count[8] + count[9]];
+            char[] result = new char[n];
             int index = 0;
 
-            for (int i = 1; i < 10; i++)
+            int firstDigit = 1;
+            while (firstDigit < 10 && freq[firstDigit] == 0)
             {
-                if (count[i] > 0)
-                {
-                    result[index++] = (char)('0' + i);
-                    count[i]--;
-                    break;
-                }
+                firstDigit++;
+            }
+            if (firstDigit < 10)
+            {
+                result[index++] = (char)(firstDigit + '0');
+                freq[firstDigit]--;
             }
 
-            while (count[0]-- > 0)
+            while (freq[0] > 0 && index < n)
             {
                 result[index++] = '0';
+                freq[0]--;
             }
-
             for (int i = 1; i < 10; i++)
             {
-                while (count[i]-- > 0)
+                while (freq[i] > 0 && index < n)
                 {
-                    result[index++] = (char)('0' + i);
+                    result[index++] = (char)(i + '0');
+                    freq[i]--;
                 }
             }
 
             return new string(result);
         }
 
-        static string BuildMaxNumber(int[] count)
+        static string FindMaxNumber(int[] freq, int n)
         {
-            char[] result = new char[count[0] + count[1] + count[2] + count[3] + count[4] +
-                                    count[5] + count[6] + count[7] + count[8] + count[9]];
+            char[] result = new char[n];
             int index = 0;
-
             for (int i = 9; i >= 0; i--)
             {
-                while (count[i]-- > 0)
+                while (freq[i] > 0)
                 {
-                    result[index++] = (char)('0' + i);
+                    result[index++] = (char)(i + '0');
+                    freq[i]--;
                 }
             }
 
             return new string(result);
         }
     }
-
 }
